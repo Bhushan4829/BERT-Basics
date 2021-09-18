@@ -1,0 +1,45 @@
+import tensorflow
+
+preprocess_url = "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3"
+encoder_url = "https://tfhub.dev/tensorflow/bert_en_uncased_L-12_H-768_A-12/4"
+
+import tensorflow_hub as hub
+
+from tensorflow.keras import layers
+
+from tensorflow_hub import KerasLayer
+
+!pip install tensorflow-text
+
+import tensorflow_text as text
+
+bert_preprocess_model = hub.KerasLayer(preprocess_url)
+bert_encoder_model = hub.KerasLayer(encoder_url)
+
+test_text = ['I love pizza',
+ 	     'India is my country',
+ 	     'Italy is fun place to visit']
+
+processed_text = bert_preprocess_model(test_text)
+print(processed_text.keys())
+
+bert_results = bert_encoder_model(processed_text)
+bert_results.keys()
+
+# input_mask 
+print(processed_text['input_mask'])
+
+# input_mask 
+print(processed_text['input_type_ids'])
+
+# input_mask 
+print(processed_text['input_word_ids'])
+
+print(bert_results['pooled_output'])
+
+print(bert_results['sequence_output'])
+
+bert_results['encoder_outputs'][-1] == bert_results['sequence_output']
+
+from google.colab import drive
+drive.mount('/content/drive')
